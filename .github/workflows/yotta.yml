@@ -1,0 +1,21 @@
+name: Yotta CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Yotta Dependencies
+      run: sudo apt-get update && sudo apt-get install python-setuptools  cmake build-essential ninja-build python-dev libffi-dev libssl-dev && sudo easy_install pip
+    - name: Install Yotta
+      run: sudo pip install yotta
+    - name: Build
+      run: yotta build
