@@ -21,9 +21,39 @@ jobs:
       run: yotta update
     - name: Build
       run: yotta build
-    - name: List dir
-      run: ls
-    - name: List build dir
-      run: ls build/calliope-mini-classic-gcc/source
-    - name: List yotta modules
-      run: ls yotta_modules
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag_version.outputs.new_tag }}
+        release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+        draft: false
+        prerelease: true
+        body: ${{ steps.tag_version.outputs.changelog }}
+    - name: Upload calliope-demo-combined.hex
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./build/calliope-mini-classic-gcc/source/calliope-demo-combined.hex
+        asset_name: calliope-demo-combined.hex
+        asset_content_type: text/plain
+    - name: Upload calliope-demo.hex
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./build/calliope-mini-classic-gcc/source/calliope-demo.hex
+        asset_name: calliope-demo.hex
+        asset_content_type: text/plain
