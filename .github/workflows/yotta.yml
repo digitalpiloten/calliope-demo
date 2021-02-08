@@ -13,8 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install Yotta Dependencies
-      run: sudo apt-get update && sudo apt-get install python-setuptools  cmake build-essential ninja-build python-dev libffi-dev libssl-dev && sudo easy_install pip
+    - name: Install Ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Install Python 2.7.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '2.7.x'
+    - name: Update packages
+      run: sudo apt-get update
+    - name: Install Yotta dependencies
+      run: sudo apt-get install libffi-dev libssl-dev -y
     - name: Install Yotta
       run: sudo pip install yotta
     - name: Build
