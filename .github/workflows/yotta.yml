@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Yotta
-      uses: marvinschopf/install-yotta@master
+      uses: marvinschopf/install-yotta@main
     - name: Build
       run: yotta build
