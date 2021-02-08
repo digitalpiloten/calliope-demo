@@ -24,6 +24,6 @@ jobs:
     - name: List dir
       run: ls
     - name: List build dir
-      run: ls build
+      run: ls build/calliope-mini-classic-gcc
     - name: List yotta targets
-      run: ls yotta_targets
+      run: ls yotta_targets/calliope-mini-classic-gcc
