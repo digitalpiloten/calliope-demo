@@ -13,15 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install Python 2.7.x
-      uses: actions/setup-python@v2
-      with:
-        python-version: '2.7.x'
-    - name: Update packages
-      run: sudo apt-get update
-    - name: Install Ninja
-      run: sudo apt-get install ninja-build -y
     - name: Install Yotta
-      run: sudo pip install yotta
+      uses: marvinschopf/install-yotta@master
     - name: Build
       run: yotta build
